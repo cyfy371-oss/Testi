@@ -3,31 +3,39 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Ферма Holiday — Фрукты & Овощи</title>
+  <title>Ферма Holiday — Новогодний супермаркет</title>
   <link rel="stylesheet" href="style.css">
   <meta name="description" content="Ферма Holiday — свежие фрукты и овощи к празднику. Закажите в Telegram прямо сейчас!">
 </head>
 <body>
-  <div class="snow" aria-hidden="true"></div>
+  <!-- Snowflakes canvas -->
+  <canvas id="snowCanvas" class="snow-canvas" aria-hidden="true"></canvas>
 
   <header class="site-header">
     <div class="container header-inner">
       <div class="brand">
-        <img src="https://images.unsplash.com/photo-1518976024611-7f4a4f8c9efc?q=80&w=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=b3a5f7b4aca1b3c9d7b8b1fa2f0b2a7c" alt="logo" class="logo">
+        <img src="https://images.unsplash.com/photo-1518976024611-7f4a4f8c9efc?q=80&w=120&auto=format&fit=crop&ixlib=rb-4.0.3&s=b3a5f7b4aca1b3c9d7b8b1fa2f0b2a7c" alt="logo" class="logo">
         <div>
           <h1>Ферма Holiday</h1>
-          <p class="tag">Свежие фрукты и овощи — новогодняя коллекция</p>
+          <p class="tag">Свежие фрукты и овощи — праздничный маркет</p>
         </div>
       </div>
 
       <nav class="header-actions">
         <div class="search">
-          <input id="searchInput" placeholder="Поиск по товарам — яблоки, груши..." aria-label="Поиск">
+          <input id="searchInput" placeholder="Поиск: яблоки, апельсины..." aria-label="Поиск">
         </div>
-        <button id="cartBtn" class="cart-btn" aria-label="Открыть корзину">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 4h-2l-1 2h2l1-2zM7 4h9l3 8h-14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span id="cartBadge" class="badge">0</span>
-        </button>
+
+        <div class="user-controls">
+          <div class="balance" id="balanceDisplay" title="Баланс">Баланс: <strong id="balanceAmount">0 ₽</strong></div>
+          <button id="profileBtn" class="avatar-btn" aria-label="Профиль">
+            <img id="avatarImg" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=80&auto=format&fit=crop&ixlib=rb-4.0.3&s=3e7c5a2ca5b8b2b0c6f3d9e8a1c2b3d4" alt="avatar">
+          </button>
+          <button id="cartBtn" class="cart-btn" aria-label="Корзина">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 4h-2l-1 2h2l1-2zM7 4h9l3 8h-14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span id="cartBadge" class="badge">0</span>
+          </button>
+        </div>
       </nav>
     </div>
   </header>
@@ -35,62 +43,124 @@
   <main class="container main">
     <section class="hero">
       <div class="hero-left">
-        <h2>Новогодняя корзина свежести</h2>
-        <p>Подготовьте стол к празднику — фрукты и овощи от нашей фермы. Быстрая доставка и праздничная упаковка.</p>
+        <h2>Праздничные фрукты и овощи</h2>
+        <p>Подготовьте стол к празднику: праздничная упаковка, свежие поставки, быстрая доставка.</p>
         <div class="hero-ctas">
           <button id="openFruits" class="btn primary">Фрукты</button>
           <button id="openVeg" class="btn outline">Овощи</button>
+          <button id="openGifts" class="btn outline">Подарочные наборы</button>
         </div>
       </div>
       <div class="hero-right">
-        <img src="https://images.unsplash.com/photo-1543349684-8b8aa00b6a73?q=80&w=900&auto=format&fit=crop&ixlib=rb-4.0.3&s=a4e9c9f7c47a6f1fb9b655b2217c2a9b" alt="holiday produce" class="hero-image">
+        <img src="https://images.unsplash.com/photo-1548095115-45697e1d3e99?q=80&w=900&auto=format&fit=crop&ixlib=rb-4.0.3&s=4b3b8d5c8a2b9d0f4c1a3e2f6d7b8c9a" alt="holiday produce" class="hero-image">
       </div>
     </section>
 
-    <section class="categories">
-      <button class="cat active" data-cat="all">Все</button>
-      <button class="cat" data-cat="fruits">Фрукты</button>
-      <button class="cat" data-cat="veggies">Овощи</button>
-      <button class="cat" data-cat="gifts">Подарочные наборы</button>
-    </section>
+    <section class="panel">
+      <div class="categories" role="tablist" aria-label="Категории">
+        <button class="cat active" data-cat="all">Все</button>
+        <button class="cat" data-cat="fruits">Фрукты</button>
+        <button class="cat" data-cat="veggies">Овощи</button>
+        <button class="cat" data-cat="gifts">Подарки</button>
+      </div>
 
-    <section class="products" id="productsGrid" aria-live="polite">
-      <!-- Продукты рендерятся JS -->
+      <section class="products" id="productsGrid" aria-live="polite">
+        <!-- JS renders products -->
+      </section>
     </section>
 
     <section class="about">
-      <h3>Праздничная упаковка и доставка</h3>
-      <p>Каждый заказ мы можем упаковать в праздничный пакет с лентой и открыткой. Укажите комментарий при оформлении — и мы подготовим сюрприз!</p>
+      <h3>Праздничная упаковка</h3>
+      <p>Добавьте подарок к заказу — мы красиво упакуем и положим праздничную открытку.</p>
     </section>
   </main>
 
-  <!-- Корзина (модал) -->
+  <!-- Cart modal -->
   <aside class="cart-modal" id="cartModal" aria-hidden="true">
     <div class="cart-panel">
       <header class="cart-header">
         <h3>Ваша корзина</h3>
-        <button id="closeCart" class="close" aria-label="Закрыть корзину">&times;</button>
+        <button id="closeCart" class="close" aria-label="Закрыть">&times;</button>
       </header>
-      <div class="cart-body" id="cartItems">
-        <!-- items -->
-      </div>
+      <div class="cart-body" id="cartItems"></div>
       <footer class="cart-footer">
         <div class="totals">
-          <span>Итого:</span>
-          <strong id="cartTotal">0 ₽</strong>
+          <div>Итого:</div>
+          <div class="total-amount" id="cartTotal">0 ₽</div>
         </div>
-        <textarea id="orderNote" placeholder="Комментарий к заказу (подарочная упаковка, адрес, пожелания)"></textarea>
+        <textarea id="orderNote" placeholder="Комментарий: подарок, адрес, пожелания"></textarea>
         <div class="cart-actions">
-          <button id="checkoutBtn" class="btn primary large">Оформить заказ в Telegram</button>
-          <button id="continueBtn" class="btn outline">Продолжить покупки</button>
+          <button id="checkoutBtn" class="btn primary large">Оплатить</button>
+          <button id="payLaterBtn" class="btn outline">Оплатить при получении</button>
         </div>
       </footer>
     </div>
   </aside>
 
+  <!-- Profile modal -->
+  <aside class="profile-modal" id="profileModal" aria-hidden="true">
+    <div class="profile-panel">
+      <header class="profile-header">
+        <div class="profile-left">
+          <img id="profileAvatar" src="" alt="avatar" class="profile-avatar">
+          <div>
+            <div id="profileName" class="profile-name">Гость</div>
+            <div class="profile-id" id="profileId">ID: —</div>
+          </div>
+        </div>
+        <button id="closeProfile" class="close" aria-label="Закрыть">&times;</button>
+      </header>
+
+      <div class="profile-body">
+        <div class="balance-block">
+          <div>Баланс</div>
+          <div class="balance-amount" id="profileBalance">0 ₽</div>
+          <div class="balance-actions">
+            <button id="topUpBtn" class="btn primary small">Пополнить</button>
+            <button id="withdrawBtn" class="btn outline small">Вывести</button>
+          </div>
+        </div>
+
+        <div class="history">
+          <h4>Прошлые покупки</h4>
+          <div id="purchaseHistory">Пока нет покупок</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Payment modal (fake) -->
+  <aside class="payment-modal" id="paymentModal" aria-hidden="true">
+    <div class="payment-panel">
+      <header class="payment-header">
+        <h3>Оплата заказа</h3>
+        <button id="closePayment" class="close" aria-label="Закрыть">&times;</button>
+      </header>
+      <div class="payment-body">
+        <div id="paymentSummary" class="payment-summary"></div>
+        <div class="payment-methods">
+          <label><input type="radio" name="payMethod" value="balance" checked> С баланса</label>
+          <label><input type="radio" name="payMethod" value="card"> Банковская карта</label>
+        </div>
+        <div id="cardForm" class="card-form" aria-hidden="true">
+          <input id="cardNumber" placeholder="Номер карты (фейк)" maxlength="19">
+          <div class="small-row">
+            <input id="cardMM" placeholder="MM" maxlength="2">
+            <input id="cardYY" placeholder="YY" maxlength="2">
+            <input id="cardCVV" placeholder="CVV" maxlength="3">
+          </div>
+        </div>
+        <div class="payment-actions">
+          <button id="confirmPayBtn" class="btn primary large">Подтвердить оплату</button>
+          <button id="cancelPayBtn" class="btn outline">Отмена</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+
   <footer class="site-footer">
     <div class="container">
-      <p>© Ферма Holiday — свежие фрукты и овощи. С любовью к празднику 🎄</p>
+      <p>© Ферма Holiday — праздничные фрукты и овощи. С любовью к празднику 🎄</p>
     </div>
   </footer>
 
